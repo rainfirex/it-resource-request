@@ -1,0 +1,45 @@
+body {
+    font-family: "dejavu serif";
+    /*font-family: DejaVu Sans, serif normal;*/
+    margin: 80px 35px 35px;
+    font-size: 14px;
+}
+p, h2, h3{ margin: 0; }
+.text-center{ text-align: center;}
+.text-right{text-align: right;}
+.text-underline{text-decoration: underline;}
+.border-bottom{border-bottom: solid 1px black;}
+.ir span{
+    margin-right: 2px;
+    padding: 2px 5px 2px 2px;
+    border: solid 1px black;
+}
+.print {
+    float: right;
+    width: 250px;
+}
+.clear{
+    clear: both;
+}
+.font-small{
+    font-size: 12px;
+}
+.x-cols{
+    padding: 5px;
+}
+.x-col-1{
+    width: 36%;
+    float: left;
+}
+.x-col-2{
+    width:60%;
+    float: left;
+}
+.signature {
+    max-width: 100%;
+    width: 80px;
+    position: absolute;
+    top: -21px;
+    left: -90px;
+    height: 40px;
+}
