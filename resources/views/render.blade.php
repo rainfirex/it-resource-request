@@ -20,6 +20,7 @@
     <div class="clear"></div>
     <h2 class="text-center">ЗАЯВКА</h2>
     <h2 class="text-center">на предоставление доступа к ИР</h2>
+
     <!--Информация о сотруднике-->
     <div style="margin-top: 10px">
         <div class="x-cols">
@@ -47,66 +48,80 @@
             <div class="x-col-2 border-bottom">{{ $user->phone }}</div>
         </div>
         <div class="clear"></div>
+        @if($user->ipPhone)
         <div class="x-cols">
             <div class="x-col-1">IP Телефон:</div>
             <div class="x-col-2 border-bottom">{{ $user->ipPhone }}</div>
         </div>
         <div class="clear"></div>
+        @endif
         <div class="x-cols">
             <div class="x-col-1">В период с:</div>
             <div class="x-col-2 border-bottom">{{ $user->perStart }} по: {{ $user->perEnd }}</div>
         </div>
         <div class="clear"></div>
+
+        @if($user->example)
+        <div class="x-cols">
+            <div class="x-col-1">Пользователь для примера:</div>
+            <div class="x-col-2 border-bottom">{{ $user->example }}</div>
+        </div>
+        <div class="clear"></div>
+        @endif
     </div>
     <!--Доступ к информационным ресурсам-->
     <div style="margin-top: 10px">
         <h3 style="margin-bottom: 4px">1. Доступ к информационным ресурсам</h3>
         <div class="ir">
-            @if($user->access->isLogin)
+            @if($user->isLogin)
                 <span>Доступ к ресурсам ЛВС (учетная запись)</span>
             @endif
 
-            @if($user->access->is1CUPP)
+            @if($user->is1CUPP)
                 <span> 1С УПП</span>
             @endif
 
-            @if($user->access->is1CZPP)
+            @if($user->is1CZPP)
                 <span>1С Зарплата и Управление персоналом</span>
             @endif
 
-            @if($user->access->isAsuse)
+            @if($user->isAsuse)
                 <span>АСУСЭ</span>
             @endif
 
-            @if($user->access->isOmniusFL)
+            @if($user->isOmniusFL)
                 <span>ОМНИУС ФЛ</span>
             @endif
 
-            @if($user->access->isOmniusYUL)
+            @if($user->isOmniusYUL)
                 <span>ОМНИУС ЮЛ</span>
             @endif
 
-            @if($user->access->isUSB)
+            @if($user->isOmniusDoc)
+                <span>ОМНИУС DOC</span>
+            @endif
+
+            @if($user->isUSB)
                 <span>USB</span>
             @endif
 
-            @if($user->access->isEmail)
+            @if($user->isEmail)
                 <span>Электронная почта</span>
             @endif
 
-            @if($user->access->isInternet)
+            @if($user->isInternet)
                 <span>Интернет</span>
             @endif
 
-            @if($user->access->isConsult)
+            @if($user->isConsult)
                 <span>Консультант плюс</span>
             @endif
 
-            @if($user->access->isFolderObmen)
+            @if($user->isFolderObmen)
                 <span>Папка обмен</span>
             @endif
 
-            @if($user->access->isWorkFromUTD)
+            @if($user->isWorkFromUTD)
                 <span>Work от УТД</span>
             @endif
         </div>
@@ -114,20 +129,20 @@
     <!--Доступ к сетевым ресурсам-->
     <div style="margin-top: 10px">
         <h3 style="margin-bottom: 4px">2. Доступ к сетевым ресурсам</h3>
-        @if($user->access->lanResource)
-            <p>{{$user->access->lanResource}}</p>
+        @if($user->lanResource)
+            <p>{{$user->lanResource}}</p>
         @endif
     </div>
     <!--Другие программы-->
     <div style="margin-top: 8px">
         <p style="margin-bottom: 4px"><b>Другие программы:</b></p>
-        @if($user->access->otherProgram)
-            <p>{{ $user->access->otherProgram }}</p>
+        @if($user->otherProgram)
+            <p>{{ $user->otherProgram }}</p>
         @endif
     </div>
     <!--Подписи-->
     <div style="margin-top: 18px">
-        @if($user->access->is1CZPP || $user->access->is1CUPP)
+        @if($user->is1CZPP || $user->is1CUPP)
             <div class="x-cols">
                 <div class="x-col-1">Главный бухгалтер:</div>
                 <div class="x-col-2 border-bottom font-small">

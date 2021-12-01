@@ -30,3 +30,7 @@ Route::prefix('/resource-access')->group(function () {
     Route::post('create', 'CResourceAccess@store');
 
 });
+
+Route::prefix('/users')->group(function () {
+   Route::get('find/{name}', [App\Http\Controllers\AuthLdap::class, 'find']);
+});

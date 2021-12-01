@@ -42,21 +42,33 @@
             <div class="x-col-2 border-bottom">{{ $user->address }} Кабинет: {{ $user->cabinet }}</div>
         </div>
         <div class="clear"></div>
+        @if($user->phone)
         <div class="x-cols">
             <div class="x-col-1">Телефон:</div>
             <div class="x-col-2 border-bottom">{{ $user->phone }}</div>
         </div>
         <div class="clear"></div>
+        @endif
+        @if($user->ipPhone)
         <div class="x-cols">
             <div class="x-col-1">IP Телефон:</div>
             <div class="x-col-2 border-bottom">{{ $user->ipPhone }}</div>
         </div>
         <div class="clear"></div>
+        @endif
         <div class="x-cols">
             <div class="x-col-1">В период с:</div>
             <div class="x-col-2 border-bottom">{{ $user->perStart }} по: {{ $user->perEnd }}</div>
         </div>
         <div class="clear"></div>
+        @if($user->example)
+        <div class="x-cols">
+            <div class="x-col-1">Пользователь для примера:</div>
+            <div class="x-col-2 border-bottom">{{ $user->example }}</div>
+        </div>
+        <div class="clear"></div>
+        @endif
+
     </div>
     <!--Доступ к информационным ресурсам-->
     <div style="margin-top: 10px">
@@ -84,6 +96,10 @@
 
             @if($user->access->isOmniusYUL)
                 <span>ОМНИУС ЮЛ</span>
+            @endif
+
+            @if($user->access->isOmniusDoc)
+                    <span>ОМНИУС DOC</span>
             @endif
 
             @if($user->access->isOmnius)

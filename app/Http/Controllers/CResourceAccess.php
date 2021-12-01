@@ -18,7 +18,9 @@ class CResourceAccess extends Controller
     }
 
     public function render(){
-        $user = self::fakeUser();
+//        $user = self::fakeUser();
+        $user = self::fakerUserId(116);
+
         $user->shortName = StringGenerator::shortUsername($user->name);
         $user->shortLeader = StringGenerator::shortUsername($user->leader);
         $user->login = StringGenerator::login($user->name);
@@ -119,6 +121,7 @@ class CResourceAccess extends Controller
                 'function' => $user->function,
                 'unit' => $user->unit,
                 'address' => $user->address,
+                'example' => $user->example,
                 'cabinet' => $user->cabinet,
                 'phone' => $user->phone,
                 'ipPhone' => $user->ipPhone,
@@ -131,6 +134,7 @@ class CResourceAccess extends Controller
                 'isOmniusFL' => $user->access->isOmniusFL,
                 'isOmniusYUL' => $user->access->isOmniusYUL,
                 'isOmnius' => $user->access->isOmnius,
+                'isOmniusDoc' => $user->access->isOmniusDoc,
                 'isUSB' => $user->access->isUSB,
                 'isFolderObmen' => $user->access->isFolderObmen,
                 'isWorkFromUTD' => $user->access->isWorkFromUTD,
@@ -164,7 +168,7 @@ class CResourceAccess extends Controller
      * Фейковый пользователь
      * @return mixed
      */
-    private static function fakeUser() {
+    private static function fakeUser(){
         return json_decode('{"name":"Файковый Пупкин Пупович",
             "leader":"Файковый Лидер",
             "function":"Фейкер!",
@@ -175,9 +179,14 @@ class CResourceAccess extends Controller
             "ipPhone": "7895",
             "perStart":"12.12.2012",
             "perEnd":"13.12.2012",
-            "access":{
-                "isOmniusYUL":true, "isOmniusFL": true, "isLogin":true,"is1CUPP":true,"is1CZPP":true,"isAsuse":true,"isUSB":true,"isFolderObmen":true,"isWorkFromUTD":true,"isEmail":true,
-                "isInternet":true,"isConsult":true,"lanResource":"NetWork","otherProgram":"Other programm"}}');
+            "isOmniusYUL":true, "isOmniusFL": true, "isLogin":true,
+             "is1CUPP":true,"is1CZPP":true,"isAsuse":true,"isUSB":true,"isFolderObmen":true,"isWorkFromUTD":true,"isEmail":true,
+             "isInternet":true,"isConsult":true,"lanResource":"NetWork","otherProgram":"Other programm"
+                }');
+    }
+
+    private static function fakerUserId($id) {
+        return ResourceAccess::find($id);
     }
 
     /**
@@ -187,7 +196,7 @@ class CResourceAccess extends Controller
      */
     private static function sendMail(string $username, array $files){
         $recipients = [
-            'Shaposhnikov-SM@sakh.dvec.ru',
+            'Gorbenko-PA@sakh.dvec.ru',
             'Poplavskiy-AA@sakh.dvec.ru'
         ];
 

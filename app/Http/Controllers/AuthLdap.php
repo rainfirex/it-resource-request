@@ -99,4 +99,16 @@ class AuthLdap extends Controller
 //        $user = $user->only(['id', 'name', 'email', 'department', 'title', 'mobile', 'phone',  'othertelephone', 'is_handler', 'is_admin', 'last_ip', 'api_token', 'created_at', 'updated_at', 'user_agent']);
         return response()->json(compact('user'));
     }
+
+    public function find($find){
+        if(!$this->ldapAuthService->loadConfig($host, $domain, $ldapDn, $bindLogin, $bindPassword)){
+            return response()->json([
+                'success' => false,
+                'message' => 'Файл настроек LDAP не обнаружен!'
+            ]);
+        }
+        $this->ldapAuthService->ldapConnect($bindLogin, $bindPassword);
+        $users = $this->ldapAuthService->getUserByName($find);
+        return response()->json(compact('users'));
+    }
 }

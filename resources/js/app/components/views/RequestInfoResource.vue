@@ -106,6 +106,23 @@
                         </small>
                     </div>
                 </div>
+                <!--Пользователь  AD пример-->
+                <div class="row form-group">
+                    <div class="offset-md-1 col-md-4 col-form-label">
+                        <label>Пользователь для примера</label>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input type="search" list="data" class="form-control" placeholder="Выбрать пользователя из списка..." v-model="user.example" ref="userExample">
+                            <datalist id="data" v-if="users.length > 1">
+                                <option v-for="usr in users" :key="user.id" >{{ usr.username }}</option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-left">
+                        <button class="btn btn-second" @click="findUserAd">Искать</button>
+                    </div>
+                </div>
                 <!--Кабинет-->
                 <div class="row form-group">
                     <div class="offset-md-1 col-md-4 col-form-label">
@@ -254,6 +271,13 @@
                                 ОМНИУС ЮЛ
                             </label>
                         </div>
+                        <!--ОМНИУС DOC-->
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" v-model="user.access.isOmniusDoc">
+                                ОМНИУС DOC
+                            </label>
+                        </div>
                     </div>
                     <div class="ml-md-4 block">
                         <!--Электронная почта-->
@@ -338,6 +362,7 @@
                     function: '',
                     unit: '',
                     address: '',
+                    example: '',
                     cabinet: '',
                     phone: '',
                     ipPhone: '',
@@ -351,10 +376,10 @@
                         isOmniusFL: false,
                         isOmniusYUL: false,
                         isOmnius: false,
+                        isOmniusDoc: false,
                         isUSB: false,
                         isFolderObmen: false,
                         isWorkFromUTD: false,
-
                         isEmail: false,
                         isInternet: false,
                         isConsult: false,
@@ -362,6 +387,7 @@
                         otherProgram: ''
                     }
                 },
+                users: []
             }
         },
         validations: {
@@ -411,7 +437,6 @@
             ...mapActions(['setMessenger', 'setLoaderBar']),
             create() {
                 this.$v.$touch();
-
                 if (this.$v.$invalid) {
                     this.setMessenger({text: 'Заполните все поля!', status: 'error'});
                     return false;
@@ -423,7 +448,6 @@
                 const frmData = new FormData();
                 frmData.append('user', JSON.stringify(this.user));
                 frmData.append('html', this.$refs.content.innerHTML);
-
 
                 axios.post(`/api/resource-access/create`, frmData)
                     .then(response => {
@@ -477,6 +501,30 @@
                         otherProgram: ''
                     }
                 };
+            },
+            findUserAd(){
+                this.isLoading = true;
+                this.setLoaderBar(true);
+                axios.get(`/api/users/find/${ this.user.example }`)
+                    .then(response => {
+                        this.users = response.data.users;
+                        if(this.users.length === 1){
+                            this.user.example = this.users[0].username;
+                        }
+                        if(this.users.length > 1){
+                            this.user.example = '';
+                        }
+                        this.$refs.userExample.focus();
+                    })
+                    .catch(error => {
+                        Sound.playSound('/sounds/_alert.mp3');
+                        this.errors = error.response.data.message;
+                        this.setMessenger({text: this.errors, status: 'error'});
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                        this.setLoaderBar(false);
+                    });
             }
         }
     }

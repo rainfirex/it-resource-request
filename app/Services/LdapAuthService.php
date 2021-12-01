@@ -12,6 +12,9 @@
 
         private $ldapConnect;
 
+        private $bindLogin;
+        private $bindPassword;
+
         /**
          * @return mixed
          */
@@ -20,21 +23,27 @@
         }
 
         /**
+         * Установить и вернуть параметры из файла конфигурации
          * @param $host
          * @param $domain
          * @param $ldapDn
+         * @param string $bindLogin
+         * @param string $bindPassword
          * @return bool
          */
-        public function loadConfig(&$host, &$domain, &$ldapDn): bool {
+        public function loadConfig(&$host, &$domain, &$ldapDn, &$bindLogin = '', &$bindPassword = ''): bool {
             $option = Config::get('ldapconfig');
-            $this->host = $host = $option['host'];
-            $this->port = $host = $option['port'];
+            $this->host   = $host = $option['host'];
+            $this->port   = $host = $option['port'];
             $this->domain = $domain = $option['domain'];
             $this->ldapDn = $ldapDn = $option['ldapDn'];
+            $this->bindLogin    = $bindLogin    = $option['bind_login'];
+            $this->bindPassword = $bindPassword = $option['bind_password'];
             return ($option == null) ? false: true;
         }
 
         /**
+         * Создать соединение
          * @param string $login
          * @param string $password
          * @return bool
@@ -78,6 +87,7 @@
         }
 
         /**
+         * Получить пользователся по логину
          * @param string $login
          * @return array|null
          */
@@ -111,6 +121,52 @@
                     'department'     => $department
                 ];
             }
+        }
+
+        /**
+         * Получить пользователей по имени
+         * @param string $username
+         * @return array
+         */
+        public function getUserByName(string $username)
+        {
+            $users = [];
+            if ($this->ldapConnect) {
+                $filter = '(&(objectClass=user)(objectCategory=person)(cn=*' . trim($username) . '*))'; //sAMAccountName
+                $sr = ldap_search($this->ldapConnect, $this->ldapDn, $filter, ['cn', 'dn', 'mail', 'telephonenumber', 'othertelephone', 'mobile', 'department', 'title', 'samaccountname', 'company', 'l', 'streetaddress']); //* 'cn', 'dn', 'mail', 'telephonenumber', 'othertelephone', 'mobile', 'department', 'title','samaccountname', 'company', 'l', 'streetaddress'
+                $ldapEntries = ldap_get_entries($this->ldapConnect, $sr);
+
+                foreach ($ldapEntries as $entry) {
+                    if (!is_array($entry)) continue;
+                    $username = isset($entry['cn']) ? $entry['cn'][0] : '';
+                    $login = isset($entry['samaccountname']) ? $entry['samaccountname'][0] : '';
+                    $email = isset($entry['mail']) ? $entry['mail'][0] : '';
+                    $phone = isset($entry['telephonenumber']) ? $entry['telephonenumber'][0] : '';
+                    $mobile = isset($entry['mobile']) ? $entry['mobile'][0] : '';
+                    $othertelephone = isset($entry['othertelephone']) ? $entry['othertelephone'][0] : '';
+                    $department = isset($entry['department']) ? $entry['department'][0] : '';
+                    $title = isset($entry['title']) ? $entry['title'][0] : '';
+                    $company = isset($entry['company']) ? $entry['company'][0] : '';
+                    $city = isset($entry['l']) ? $entry['l'][0] : '';
+                    $street = isset($entry['streetaddress']) ? $entry['streetaddress'][0] : '';
+
+                    $users[] = [
+                        'username' => $username,
+                        'login' => $this->domain . '\\' . $login,
+                        'email' => $email,
+                        'phone' => $phone,
+                        'mobile' => $mobile,
+                        'othertelephone' => $othertelephone,
+                        'department' => $department,
+                        'title' => $title,
+                        'company' => $company,
+                        'city' => $city,
+                        'street' => $street
+                    ];
+                }
+            }
+
+            return $users;
         }
     }
 }
