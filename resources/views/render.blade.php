@@ -20,7 +20,6 @@
     <div class="clear"></div>
     <h2 class="text-center">ЗАЯВКА</h2>
     <h2 class="text-center">на предоставление доступа к ИР</h2>
-
     <!--Информация о сотруднике-->
     <div style="margin-top: 10px">
         <div class="x-cols">
@@ -60,7 +59,6 @@
             <div class="x-col-2 border-bottom">{{ $user->perStart }} по: {{ $user->perEnd }}</div>
         </div>
         <div class="clear"></div>
-
         @if($user->example)
         <div class="x-cols">
             <div class="x-col-1">Пользователь для примера:</div>
@@ -68,6 +66,16 @@
         </div>
         <div class="clear"></div>
         @endif
+
+        <div class="x-cols">
+            <div class="x-col-1">АРМ:</div>
+            @if($user->isNewARM)
+                 <div class="x-col-2 border-bottom">Да</div>
+            @else
+                <div class="x-col-2 border-bottom">Нет</div>
+            @endif
+        </div>
+        <div class="clear"></div>
     </div>
     <!--Доступ к информационным ресурсам-->
     <div style="margin-top: 10px">
@@ -173,7 +181,6 @@
             <div class="clear"></div>
         </div>
     </div>
-
     <!--Согласовано-->
     <div>
         <p style="margin: 10px 0"><b>СОГЛАСОВАНО</b></p>
@@ -199,7 +206,6 @@
             <div class="clear"></div>
         </div>
     </div>
-
     <!--Учетная запись-->
     <div style="margin-top: 15px">
         <div class="x-cols">

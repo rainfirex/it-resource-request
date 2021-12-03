@@ -69,6 +69,17 @@
         <div class="clear"></div>
         @endif
 
+        <div class="x-cols">
+            <div class="x-col-1">АРМ:</div>
+            @if($user->isNewARM)
+                <div class="x-col-2 border-bottom">Да</div>
+            @else
+                <div class="x-col-2 border-bottom">Нет</div>
+            @endif
+        </div>
+        <div class="clear"></div>
+
+
     </div>
     <!--Доступ к информационным ресурсам-->
     <div style="margin-top: 10px">

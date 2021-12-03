@@ -18,8 +18,10 @@ class CResourceAccess extends Controller
     }
 
     public function render(){
-//        $user = self::fakeUser();
-        $user = self::fakerUserId(116);
+        $user = self::fakerUserId(115);
+
+        if(empty($user))
+            $user = self::fakeUser();
 
         $user->shortName = StringGenerator::shortUsername($user->name);
         $user->shortLeader = StringGenerator::shortUsername($user->leader);
@@ -127,6 +129,7 @@ class CResourceAccess extends Controller
                 'ipPhone' => $user->ipPhone,
                 'perStart' => $user->perStart,
                 'perEnd' => $user->perEnd,
+                'isNewARM' => $user->isNewARM,
                 'isLogin' => $user->access->isLogin,
                 'is1CUPP' => $user->access->is1CUPP,
                 'is1CZPP' => $user->access->is1CZPP,
@@ -179,7 +182,9 @@ class CResourceAccess extends Controller
             "ipPhone": "7895",
             "perStart":"12.12.2012",
             "perEnd":"13.12.2012",
-            "isOmniusYUL":true, "isOmniusFL": true, "isLogin":true,
+            "isNewARM": true,
+            "example": null,
+            "isOmniusYUL":true, "isOmniusFL": true, "isLogin":true, "isOmniusDoc": true,
              "is1CUPP":true,"is1CZPP":true,"isAsuse":true,"isUSB":true,"isFolderObmen":true,"isWorkFromUTD":true,"isEmail":true,
              "isInternet":true,"isConsult":true,"lanResource":"NetWork","otherProgram":"Other programm"
                 }');

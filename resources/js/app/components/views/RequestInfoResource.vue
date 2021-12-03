@@ -223,6 +223,17 @@
                         </small>
                     </div>
                 </div>
+                <!--new arm-->
+                <div class="row form-group">
+                    <div class="offset-md-1 col-md-10">
+                        <div class="form-check">
+                            <input class="form-check-input" style="width: 15px;height: 15px; margin-right: 5px" type="checkbox"  id="flexCheckChecked" v-model="user.isNewARM">
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Новый АРМ (автоматизированное рабочее место)
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--Информационные ресурсы-->
             <div class="mb-5">
@@ -368,6 +379,7 @@
                     ipPhone: '',
                     perStart: '',
                     perEnd: '',
+                    isNewARM: false,
                     access: {
                         isLogin: false,
                         is1CUPP: false,
